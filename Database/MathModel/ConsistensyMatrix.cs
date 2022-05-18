@@ -55,19 +55,19 @@ namespace Database.MathModel
       // find w
       Weights = new double[N];
 
-      // collect in w products of rows
+      // calc eigenvectors as geometric mean
+      double pow = 1.0 / (double)N;
       for (int row = 0; row < N; row++) {
         Weights[row] = 1;
         for (int col = 0; col < N; col++) {
           Weights[row] *= RatesMatrix[row, col];
         }
+        Weights[row] = Math.Pow(Weights[row], pow);
       }
 
-      // calc w values
-      double w_sum = Weights.Select(w => Math.Pow(w, 2)).Sum();
-      double pow = 1.0 / (double)N;
+      // normalize weights
+      double w_sum = Weights.Sum();
       for (int i = 0; i < N; i++) {
-        Weights[i] = Math.Pow(Weights[i], pow);
         Weights[i] /= w_sum;
       }
     }
